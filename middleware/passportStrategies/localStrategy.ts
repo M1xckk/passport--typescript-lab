@@ -1,3 +1,4 @@
+import { UserInfo } from "os";
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { getUserByEmailIdAndPassword, getUserById} from "../../controllers/userController";
@@ -28,7 +29,7 @@ passport.serializeUser(function (user: any, done: any) {
 /*
 FIX ME (types) 😭
 */
-passport.deserializeUser(function (id: any, done: any) {
+passport.deserializeUser(function (id: string, done: any) {
   let user = getUserById(id);
   if (user) {
     done(null, user);
