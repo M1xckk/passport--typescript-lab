@@ -10,31 +10,36 @@ const localStrategy = new LocalStrategy(
     passwordField: "password",
   },
   (email, password, done) => {
-    const user = getUserByEmailIdAndPassword(email, password);
-    return user
-      ? done(null, user)
-      : done(null, false, {
-          message: "Your login details are not valid. Please try again",
-        });
+    try {
+      // Try to find a user with the given email and password
+      const user = getUserByEmailIdAndPassword(email, password);
+      if (user) {
+        done(null, user);
+      } else {
+        done(null, false, { message: "Your login details are not valid. Please try again" });
+      }
+    } catch (error) {
+      done(error);
+    }
   }
 );
 
 /*
-FIX ME (types) 😭
+done
 */
-passport.serializeUser(function (user: any, done:any) {
+passport.serializeUser((user: Express.User, done: (err:{message:string} | null, id?: number) => void) => {
   done(null, user.id);
 });
 
 /*
-FIX ME (types) 😭
+done
 */
-passport.deserializeUser(function (id: string, done: any) {
-  let user = getUserById(id);
+passport.deserializeUser((id: number, done: (err: {message:string} | null, user?: Express.User) => void) => {
+  const user = getUserById(id);
   if (user) {
     done(null, user);
   } else {
-    done({ message: "User not found" }, null);
+    done(new Error("User not found"), null);
   }
 });
 
