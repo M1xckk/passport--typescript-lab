@@ -22,7 +22,7 @@ const localStrategy = new LocalStrategy(
 /*
 FIX ME (types) 😭
 */
-passport.serializeUser(function (user: any, done: any) {
+passport.serializeUser(function (user: any, done:any) {
   done(null, user.id);
 });
 
