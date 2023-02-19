@@ -1,4 +1,3 @@
-import { UserInfo } from "os";
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { getUserByEmailIdAndPassword, getUserById} from "../../controllers/userController";
@@ -11,7 +10,6 @@ const localStrategy = new LocalStrategy(
   },
   (email, password, done) => {
     try {
-      // Try to find a user with the given email and password
       const user = getUserByEmailIdAndPassword(email, password);
       if (user) {
         done(null, user);
