@@ -25,14 +25,16 @@ const localStrategy = new LocalStrategy(
 /*
 done
 */
-passport.serializeUser((user: Express.User, done: (err:{message:string} | null, id?: number) => void) => {
+passport.serializeUser(function(
+  user: Express.User,
+  done: (error:any, id:number) => void) {
   done(null, user.id);
 });
 
 /*
 done
 */
-passport.deserializeUser((id: number, done: (err: {message:string} | null, user?: Express.User) => void) => {
+passport.deserializeUser(function(id: number, done:(error:any, user:Express.User | false |null) =>void)  {
   const user = getUserById(id);
   if (user) {
     done(null, user);
