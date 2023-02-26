@@ -1,6 +1,6 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
-import { getUserByEmailIdAndPassword, getUserById} from "../../controllers/userController";
+import { getUserByEmailIdAndPassword, getUserById } from "../../controllers/userController";
 import { PassportStrategy } from '../../interfaces/index';
 
 const localStrategy = new LocalStrategy(
@@ -21,19 +21,18 @@ const localStrategy = new LocalStrategy(
     }
   }
 );
-
 /*
 done
 */
-passport.serializeUser((user: Express.User, done: (err:{message:string} | null, id?: number) => void) => {
-  done(null, user.id);
+passport.serializeUser((user: Express.User, done: (err: Error | null, id?: string) => void) => {
+  done(null, user.id.toString());
 });
 
 /*
 done
 */
-passport.deserializeUser((id: number, done: (err: {message:string} | null, user?: Express.User) => void) => {
-  const user = getUserById(id);
+passport.deserializeUser((id: string, done: (err: Error | null, user?: Express.User) => void) => {
+  const user = getUserById(Number(id));
   if (user) {
     done(null, user);
   } else {

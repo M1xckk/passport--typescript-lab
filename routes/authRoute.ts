@@ -4,9 +4,14 @@ import { forwardAuthenticated } from "../middleware/checkAuth";
 
 const router = express.Router();
 
+declare module "express-session" {
+interface SessionData {
+message: { [key:string]: any}}}
+
 router.get("/login", forwardAuthenticated, (req, res) => {
-  const errorMessage = req.flash("error").at(-1);
-  res.render("login", {errorMessage: errorMessage});
+  const message = req.session.message ? req.session.message[0] : "";
+ req.session.message = [];
+  res.render("login", {message});
 })
 
 router.post(
@@ -15,7 +20,6 @@ router.post(
     successRedirect: "/dashboard",
     failureRedirect: "/auth/login",
     failureFlash: true,
-    failureMessage: "Invalid email or password.",
   })
 );
 
