@@ -5,7 +5,8 @@ import { forwardAuthenticated } from "../middleware/checkAuth";
 const router = express.Router();
 
 router.get("/login", forwardAuthenticated, (req, res) => {
-  res.render("login");
+  const errorMessage = req.flash("error").at(-1);
+  res.render("login", {errorMessage: errorMessage});
 })
 
 router.post(
@@ -13,7 +14,8 @@ router.post(
   passport.authenticate("local", {
     successRedirect: "/dashboard",
     failureRedirect: "/auth/login",
-    /* FIX ME: 😭 failureMsg needed when login fails */
+    failureFlash: true,
+    failureMessage: "Invalid email or password.",
   })
 );
 
