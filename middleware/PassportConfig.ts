@@ -4,7 +4,7 @@ import { PassportStrategy } from '../interfaces';
 
 export default class PassportConfig {
     /*
-     done
+      have done
     */
    constructor(strategies: PassportStrategy[]) {
 this.addStrategies(strategies);
