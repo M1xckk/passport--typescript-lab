@@ -1,13 +1,19 @@
 import express from "express";
 import passport from "passport";
 import { forwardAuthenticated } from "../middleware/checkAuth";
-import * as dotenv from "dotenv";
-dotenv.config();
 
 const router = express.Router();
 
+declare module "express-session" {
+  interface SessionData {
+    messages: { [key: string]: any };
+  }
+}
+
 router.get("/login", forwardAuthenticated, (req, res) => {
-  res.render("login");
+  const message = req.session.messages? req.session.messages[0] : "";
+  req.session.messages = [];
+  res.render("login", { message });
 });
 
 router.post(
@@ -16,20 +22,9 @@ router.post(
     successRedirect: "/dashboard",
     failureRedirect: "/auth/login",
     /* FIX ME: done*/
+    failureMessage: true,
   })
 );
-
-router.get(
-  "/github",
-  passport.authenticate("github", { scope: ["user: email"] })
-);
-
-router.get("/login/github/callback", (req, res) => {
-  passport.authenticate("github", {
-    successRedirect: "/dashboard",
-    failureRedirect: "/auth/login",
-  });
-});
 
 router.get("/logout", (req, res) => {
   req.logout((err) => {
