@@ -1,7 +1,10 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
-import { getUserByEmailIdAndPassword, getUserById } from "../../controllers/userController";
-import { PassportStrategy } from '../../interfaces/index';
+import {
+  getUserByEmailIdAndPassword,
+  getUserById,
+} from "../../controllers/userController";
+import { PassportStrategy } from "../../interfaces/index";
 
 const localStrategy = new LocalStrategy(
   {
@@ -11,37 +14,39 @@ const localStrategy = new LocalStrategy(
   (email, password, done) => {
     try {
       const user = getUserByEmailIdAndPassword(email, password);
-      if (user) {
-        done(null, user);
-      } else {
-        done(null, false, { message: "Your login details are not valid. Please try again" });
-      }
+      return user 
+        ? done(null, user)
+        : done(null, false, {
+            message: "password is incorrect",
+        }); 
     } catch (error) {
-      done(error);
+       done(null, false, {
+        message: "Couldn't find user with email: " + email,
+      });
     }
   }
 );
-/*
-done
-*/
-passport.serializeUser((user: Express.User, done: (err: Error | null, id?: string) => void) => {
-  done(null, user.id.toString());
-});
 
 /*
-done
+FIX ME (types) 😭
 */
-passport.deserializeUser((id: string, done: (err: Error | null, user?: Express.User) => void) => {
-  const user = getUserById(Number(id));
+passport.serializeUser(function (user: any, done: any) {
+  done(null, user.id);
+});
+/*
+FIX ME (types) 😭
+*/
+passport.deserializeUser(function (id: any, done: any) {
+  let user = getUserById(id);
   if (user) {
     done(null, user);
   } else {
-    done(new Error("User not found"), null);
+    done({ message: "User not found" }, null);
   }
 });
 
 const passportLocalStrategy: PassportStrategy = {
-  name: 'local',
+  name: "local",
   strategy: localStrategy,
 };
 
