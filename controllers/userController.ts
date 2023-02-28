@@ -17,21 +17,16 @@ const getUserById = (id: number) => {
 	return null;
 };
 
-function isUserValid(
-	user: {
-		id: number;
-		name: string;
-		email: string;
-		password: string;
-	},
-	password: string
-) {
-	if (user.password === password) {
-		return true;
-	} else {
-		throw new Error("Invalid password");
-	}
-}
-
-export { getUserByEmailIdAndPassword, getUserById };
-
+function isUserValid(user: any, password: string) {
+	return user.password === password;
+    }
+    const createNewUser = (id: number, name: string) => {
+	//@ts-ignore
+	 return userModel.createNewUser(id, name);
+    }
+    
+    export {
+	getUserByEmailIdAndPassword,
+	getUserById,
+	createNewUser
+    };
