@@ -10,18 +10,21 @@ const database = [
     name: "Johnny Doe",
     email: "johnny123@gmail.com",
     password: "johnny123!",
+    role: "user",
   },
   {
     id: 3,
     name: "Jonathan Chen",
     email: "jonathan123@gmail.com",
     password: "jonathan123!",
+    role: "user"
   },
   {
   id: 4,
     name: "Brian Xu",
     email: "Brian123@gmail.com",
     password: "Brian123!",
+    role: "user"
   }
 ];
 
