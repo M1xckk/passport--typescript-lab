@@ -17,6 +17,12 @@ const database = [
     email: "jonathan123@gmail.com",
     password: "jonathan123!",
   },
+  {
+  id: 4,
+    name: "Brian Xu",
+    email: "Brian123@gmail.com",
+    password: "Brian123!",
+  }
 ];
 
 const userModel = {
